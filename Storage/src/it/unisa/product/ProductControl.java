@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.product;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 public class ProductControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	static ProductModel model = new ProductModelDS();;
+	static ProductModel model = new ProductModelDS();
 	
     public ProductControl() {
         super();

@@ -8,15 +8,14 @@
 </head>
 <body>
 
-<form action="Login?log=true" method="post" onsubmit="return validationEmail()">
+<form action="UserControl?action=login" method="post" onsubmit="return validationEmail()">
 
   <h1>Login page</h1>
   email: <input type="text" id="email" name="email" placeholder="insert your email here..." onfocus="myFunction(this)"><br><br> 
   password: <input type="password" name="password" placeholder="insert your password here..." onfocus="myFunction(this)"><br><br> 
   <input type="submit" value="Accedi">
-
 </form>
-
+<p> Per registrarti premi qui! <a href ="Registration.jsp">Registrati</a><p>
 
 <script>
 function validationEmail() {

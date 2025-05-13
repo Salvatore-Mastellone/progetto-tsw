@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.product;
 
 public class ProductBean {
 	int idProdotto;

@@ -7,7 +7,7 @@
 <title>Registration page</title>
 </head>
 <body>
-<form action = "Login?log=false" method = "post">
+<form action = "UserControl?action=registration" method = "post">
 <h1>Registration page</h1>
 email: <input type = "text" name = "email" placeholder = "insert your email here..."><br><br> 
 nome: <input type = "text" name = "nome" placeholder = "insert your name here..."><br><br> 

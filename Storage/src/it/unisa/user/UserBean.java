@@ -1,14 +1,20 @@
-package it.unisa;
+package it.unisa.user;
 
 public class UserBean {
 	String nome, cognome, email, citta, provincia, password, indirizzo;
 	int cap;
 	
 	public UserBean() {
-		email = " ";
-		
+		this.nome = null;
+		this.cognome = null;
+		this.email = null;
+		this.citta = null;
+		this.provincia = null;
+		this.password = null;
+		this.indirizzo = null;
+		this.cap = 0;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}

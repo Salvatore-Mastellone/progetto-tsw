@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.user;
 
 import java.sql.SQLException;
 

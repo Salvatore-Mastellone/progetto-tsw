@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.user;
 
 
 import java.io.IOException;
@@ -51,13 +51,14 @@ public class Login extends HttpServlet {
 			String user = request.getParameter("email");
 			String plainPass = request.getParameter("password");
 			
-			request.getSession().setAttribute("login", true);  //abbiamo settato un attributo nella sessione
-			
+			request.getSession().setAttribute("login", true);  //abbiamo settato un attributo nella sessione che indics che l'utente ha fatto il login
+			boolean matches = false;
 			try {
 				UserBean u = model.doRetrieveByKey(user);
+				if(u.getEmail() != null) {
 				String pass = u.getPassword();
-		        boolean matches = BCrypt.checkpw(plainPass, pass);
-		        
+		        matches = BCrypt.checkpw(plainPass, pass);
+				}
 		        //salva i dati dell'utente durante la sessione
 		        if (matches) {
 		        	request.getSession().setAttribute("admin", false);

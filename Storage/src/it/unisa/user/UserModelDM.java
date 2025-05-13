@@ -1,29 +1,10 @@
-package it.unisa;
+package it.unisa.user;
 
 import java.sql.*;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import it.unisa.DriverManagerConnectionPool;
 
 public class UserModelDM implements UserModel{
-
-private static DataSource ds;
-	
-	static {
-		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			
-			ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-		} catch (NamingException e) {
-			System.out.println("Error:" + e.getMessage());
-		}
-	}
-
-	
 	private static final String TABLE_NAME = "Utenti";
 
 	@Override
@@ -36,8 +17,7 @@ private static DataSource ds;
 				+ " (email, nome, cognome, indirizzo, citta, provincia, cap, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
-			//connection = DriverManagerConnectionPool.getConnection();
-			connection = ds.getConnection();
+			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, user.getEmail());
 			preparedStatement.setString(2, user.getNome());
@@ -49,7 +29,13 @@ private static DataSource ds;
 			preparedStatement.setString(8, user.getPassword());
 
 			preparedStatement.executeUpdate();
-
+			connection.commit();
+		}catch (SQLException e) {
+			if (connection != null) {
+				connection.rollback();
+			}
+			e.printStackTrace();
+			throw e;
 		} finally {
 			try {
 				if (preparedStatement != null)
@@ -57,7 +43,7 @@ private static DataSource ds;
 			} finally {
 				if(connection != null)
 					connection.close();
-				//DriverManagerConnectionPool.releaseConnection(connection);
+				DriverManagerConnectionPool.releaseConnection(connection);
 			}
 		}
 	}
@@ -67,7 +53,7 @@ private static DataSource ds;
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		UserBean bean = new UserBean();
+		UserBean bean = null;
 
 		String selectSQL = "SELECT * FROM " + UserModelDM.TABLE_NAME + " WHERE email = ?";
 
@@ -75,10 +61,11 @@ private static DataSource ds;
 			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
 			preparedStatement.setString(1, email);
-
+			
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
+				bean = new UserBean();
 				bean.setCap(rs.getInt("cap"));
 				bean.setCitta(rs.getString("citta"));
 				bean.setCognome(rs.getString("cognome"));

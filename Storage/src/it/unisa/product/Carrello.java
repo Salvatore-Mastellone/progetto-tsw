@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.product;
 
 import java.util.ArrayList;
 import java.util.List;

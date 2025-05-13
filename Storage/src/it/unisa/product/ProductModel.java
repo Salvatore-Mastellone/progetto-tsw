@@ -1,4 +1,4 @@
-package it.unisa;
+package it.unisa.product;
 
 import java.sql.SQLException;
 import java.util.Collection;
