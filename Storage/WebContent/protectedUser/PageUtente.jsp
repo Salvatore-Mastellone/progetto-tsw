@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Pagina Utente</title>
+<title>Benvenuto <%= session.getAttribute("nome") %></title>
 </head>
 <body>
 
-<h1>BENVENUTO</h1>
+<h1>BENVENUTO <%= session.getAttribute("nome") %> </h1>
 <form action = "ProductControl?action = modifica" method = "post">
 <!-- fa comparire i dati dell'utente per l'eventuale modifica --> 
 email: <input type = "text" name = "email" value = <%= session.getAttribute("email") %>><br><br> 

@@ -43,7 +43,6 @@ public class UserControl extends HttpServlet {
 					UserBean u = model.doRetrieveByKey(email);		//restituisce un user se esiste con quella email
 					//solo se l'user esiste e la pass
 					if(u.getEmail() != null && BCrypt.checkpw(pwd, u.getPassword())){
-						request.getSession().setAttribute("login", true);  
 						request.getSession().setAttribute("admin", false);
 			        	request.getSession().setAttribute("email", u.getEmail());
 			        	request.getSession().setAttribute("nome", u.getNome());
@@ -52,7 +51,7 @@ public class UserControl extends HttpServlet {
 			        	request.getSession().setAttribute("città", u.getCitta());
 			        	request.getSession().setAttribute("provincia", u.getProvincia());
 			        	request.getSession().setAttribute("Cap", u.getCap());
-						response.sendRedirect("PageUtente.jsp");
+						response.sendRedirect("protectedUser/PageUtente.jsp");
 					}
 					else 
 						response.sendRedirect("FailLogin.jsp");
