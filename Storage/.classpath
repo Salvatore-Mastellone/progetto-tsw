@@ -15,6 +15,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/olivo/Desktop/tsw/criptaggio/jBCrypt-0.4.jar"/>
+	<classpathentry kind="lib" path="/Users/francescapialatino/Desktop/ProgettoGit/progetto-tsw/Storage/WebContent/WEB-INF/lib/jbcrypt-0.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -9,6 +9,9 @@ public interface UserModel {
 	public boolean doDelete(String email) throws SQLException;
 
 	public UserBean doRetrieveByKey(String email) throws SQLException;
+	
+	//aggiorna i campi dell'utente
+	public void doUpdate(String email, UserBean user) throws SQLException;
 		
 	//public Collection<ProductBean> doRetrieveAll(String order) throws SQLException;
 }

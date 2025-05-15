@@ -25,10 +25,10 @@ function validationEmail() {
 
   if (chiocciolaPosizione < 1 || puntoPosizione < chiocciolaPosizione + 2 || puntoPosizione + 2 >= email.length) {
     alert("Email non valida. Riprova.");
-    return false; // ❌ blocca l'invio del form
+    return false;
   }
 
-  return true; // ✅ email valida, invia il form
+  return true;
 }
 
 function myFunction(x) {

@@ -9,6 +9,6 @@ public interface ProductModel {
 	public boolean doDelete(int code) throws SQLException;
 
 	public ProductBean doRetrieveByKey(int code) throws SQLException;
-	
+		
 	public Collection<ProductBean> doRetrieveAll(String order) throws SQLException;
 }

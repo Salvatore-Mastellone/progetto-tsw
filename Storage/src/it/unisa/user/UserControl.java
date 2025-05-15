@@ -44,7 +44,7 @@ public class UserControl extends HttpServlet {
 					//solo se l'user esiste e la pass
 					if(u.getEmail() != null && BCrypt.checkpw(pwd, u.getPassword())){
 						request.getSession().setAttribute("admin", false);
-			        	request.getSession().setAttribute("email", u.getEmail());
+			        	request.getSession().setAttribute("email", u.getEmail()); //la usiamo anche per cambiare i dati dell'utente
 			        	request.getSession().setAttribute("nome", u.getNome());
 			        	request.getSession().setAttribute("cognome", u.getCognome());
 			        	request.getSession().setAttribute("indirizzo", u.getIndirizzo());
@@ -78,8 +78,53 @@ public class UserControl extends HttpServlet {
 					model.doSave(user);
 					response.sendRedirect("SuccRegistration.jsp");
 				}
+			} else if(action.equalsIgnoreCase("modifica")) {
+				
+				String originalEmail = (String)request.getSession().getAttribute("email"); //cerchiamo l'utente nel db per cambiare i dati
+				UserBean oldUsr = model.doRetrieveByKey(originalEmail);
+
+				
+				String email = request.getParameter("email"); //email del form
+				String nome = request.getParameter("nome");
+				String cognome = request.getParameter("cognome");
+				String indirizzo = request.getParameter("indirizzo");
+				String citta = request.getParameter("citta");
+				String provincia = request.getParameter("provincia"); 
+				String cap = request.getParameter("cap");
+
+				
+				
+				UserBean usr; 
+				
+				String checkValue = request.getParameter("check");
+				
+				//verifica se l'utente vuole anche cambiare password
+				if(checkValue != null && checkValue.equals("true")) {
+					String oldPassword = request.getParameter("oldPass");
+					
+					//se la pass vecchia è stata messa correttamente si procede al cambio password
+					if(BCrypt.checkpw(oldPassword, oldUsr.getPassword())) {
+						String newPassword = request.getParameter("newPass");
+						String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+						usr = new UserBean(nome, cognome, email, citta, provincia, hashedPassword, indirizzo, Integer.parseInt(cap));
+						model.doUpdate(originalEmail, usr);
+					} else { //se la password vecchia non coincide
+						System.out.println("Password errata o mancante"); //lo implementiamo con qualche pagina di errore
+					}
+					
+				} else { //se l'utente non vuole cambiare password
+					
+					//cambiamo solo gli altri dati
+					usr = new UserBean(nome, cognome, email, citta, provincia, null, indirizzo, Integer.parseInt(cap));
+					model.doUpdate(originalEmail, usr);
+					
+				}
+				
+				response.sendRedirect("Login.jsp");
+				
+			 }
 			}
-			}
+			
 		} catch (SQLException e) {
 			System.out.println("Error:" + e.getMessage());
 		}

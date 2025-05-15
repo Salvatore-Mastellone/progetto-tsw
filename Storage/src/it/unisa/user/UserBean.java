@@ -2,7 +2,7 @@ package it.unisa.user;
 
 public class UserBean {
 	String nome, cognome, email, citta, provincia, password, indirizzo;
-	int cap;
+	int cap, id;
 	
 	public UserBean() {
 		this.nome = null;
@@ -13,6 +13,24 @@ public class UserBean {
 		this.password = null;
 		this.indirizzo = null;
 		this.cap = 0;
+	}
+
+	public UserBean(String nome, String cognome, String email, String citta, String provincia, String password,
+			String indirizzo, int cap) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.email = email;
+		this.citta = citta;
+		this.provincia = provincia;
+		if(password != null) //Se la pass non è nulla la setta
+			this.password = password;
+		
+		this.indirizzo = indirizzo;
+		this.cap = cap;
+	}
+	public int getId(){
+		return id;
 	}
 
 	public String getNome() {
@@ -53,6 +71,10 @@ public class UserBean {
 	
 	public void setCitta(String citta) {
 		this.citta = citta;
+	}
+	
+	public void setCitta(int id) {
+		this.id = id;
 	}
 	
 	public String getProvincia() {
