@@ -40,7 +40,7 @@ public class UserControl extends HttpServlet {
 				if(action.equalsIgnoreCase("login")) {
 					String email = request.getParameter("email");	//preleva l'email dalla richiesta
 					String pwd = request.getParameter("password");	//preleva la password dalla richiesta
-					UserBean u = model.doRetrieveByKey(email);		//restituisce un user se esiste con quella email
+					UserBean u = model.doRetrieveByKey(email,0);		//restituisce un user se esiste con quella email
 					//solo se l'user esiste e la pass
 					if(u.getEmail() != null && BCrypt.checkpw(pwd, u.getPassword())){
 						request.getSession().setAttribute("admin", false);
@@ -58,7 +58,7 @@ public class UserControl extends HttpServlet {
 				}
 				else if(action.equalsIgnoreCase("registration")) {
 					String email = request.getParameter("email");
-					UserBean tmp = model.doRetrieveByKey(email);
+					UserBean tmp = model.doRetrieveByKey(email,0);
 
 					if(tmp!= null && tmp.getEmail().equals(email)) { //se l'email già c'è l'utente viene mandato al Login
 						response.sendRedirect("ErrorPage.jsp");
@@ -81,7 +81,7 @@ public class UserControl extends HttpServlet {
 			} else if(action.equalsIgnoreCase("modifica")) {
 				
 				String originalEmail = (String)request.getSession().getAttribute("email"); //cerchiamo l'utente nel db per cambiare i dati
-				UserBean oldUsr = model.doRetrieveByKey(originalEmail);
+				UserBean oldUsr = model.doRetrieveByKey(originalEmail,0);
 
 				
 				String email = request.getParameter("email"); //email del form

@@ -49,18 +49,24 @@ public class UserModelDM implements UserModel{
 	}
 
 	@Override
-	public synchronized UserBean doRetrieveByKey(String email) throws SQLException {
+	public synchronized UserBean doRetrieveByKey(String email, int id) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-
+		
+		
 		UserBean bean = null;
-
-		String selectSQL = "SELECT * FROM " + UserModelDM.TABLE_NAME + " WHERE email = ?";
-
+		String selectSQL = "SELECT * FROM " + UserModelDM.TABLE_NAME + " WHERE ";
+		if(email != null && email !="") {
+			selectSQL += "email = ?";
+		} else if(id != 0)
+			selectSQL += "id = ?";
 		try {
 			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setString(1, email);
+			if(email != null && email !="") {
+				preparedStatement.setString(1, email);
+			} else if(id != 0)
+				preparedStatement.setString(1, email);
 			
 			ResultSet rs = preparedStatement.executeQuery();
 

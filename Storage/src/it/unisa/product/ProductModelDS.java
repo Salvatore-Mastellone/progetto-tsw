@@ -7,26 +7,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import it.unisa.DriverManagerConnectionPool;
 
 public class ProductModelDS implements ProductModel {
-	private static DataSource ds;
-	
-	static {
-		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			
-			ds = (DataSource) envCtx.lookup("jdbc/storage");
-
-		} catch (NamingException e) {
-			System.out.println("Error:" + e.getMessage());
-		}
-	}
-
 	private static final String TABLE_NAME = "Prodotto";
 	
 	public synchronized void doSave(ProductBean product) throws SQLException {
@@ -38,7 +21,7 @@ public class ProductModelDS implements ProductModel {
 				+ " (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		
 		try {
-			connection = ds.getConnection();
+			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, product.getNome());
 			preparedStatement.setString(2, product.getCategoria());
@@ -51,6 +34,7 @@ public class ProductModelDS implements ProductModel {
 			preparedStatement.setString(9, product.getLinkAccesso());
 			
 			preparedStatement.executeUpdate();
+			connection.commit();
 		} finally {
 			try {
 				if(preparedStatement != null)
@@ -71,7 +55,7 @@ public class ProductModelDS implements ProductModel {
 		String deleteSql = "DELETE FROM "  + ProductModelDS.TABLE_NAME + " WHERE idProdotto = ?";
 		
 		try {
-			connection = ds.getConnection();
+			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(deleteSql);
 			preparedStatement.setInt(1, code);
 			
@@ -99,7 +83,7 @@ public class ProductModelDS implements ProductModel {
 		String selectSQL = "SELECT * FROM " + ProductModelDS.TABLE_NAME + " WHERE idProdotto = ?";
 		
 		try {
-			connection = ds.getConnection();
+			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
 			preparedStatement.setInt(1, code);
 			
@@ -143,7 +127,7 @@ public class ProductModelDS implements ProductModel {
 		}
 		
 		try {
-			connection = ds.getConnection();
+			connection = DriverManagerConnectionPool.getConnection();
 			preparedStatement = connection.prepareStatement(selectSql);
 
 			ResultSet rs = preparedStatement.executeQuery();

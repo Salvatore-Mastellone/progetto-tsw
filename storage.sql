@@ -1,14 +1,14 @@
-DROP DATABASE IF EXISTS progettoTSW;
-CREATE DATABASE progettoTSW;
-USE progetto TSW;
+DROP DATABASE IF EXISTS progettotsw;
+CREATE DATABASE progettotsw;
+USE progettotsw;
 
 CREATE TABLE Prodotto (
 idProdotto int(3) primary key AUTO_INCREMENT,
 nome varchar(100) not null,
-categoria char(10) not null, --Se è un oggetto oppure un corso
+categoria char(10) not null, -- Se è un oggetto oppure un corso
 descrizione varchar(200) not null,
-stato boolean not null, --True se è ancora in vendita, False se non è più in vedita
-lingua varchar(20) not null, --Lingua del prodotto
+stato boolean not null, -- True se è ancora in vendita, False se non è più in vedita
+lingua varchar(20) not null, -- Lingua del prodotto
 iva int(2) not NULL,
 prezzo decimal(6,2) not null,
 stock int(3),
@@ -16,7 +16,7 @@ linkAccesso varchar(200)
 );
 
 CREATE TABLE Utenti (
-id int primary key AUTO_INCREMENT,
+id int(3) primary key AUTO_INCREMENT,
 email varchar(50) not null,
 nome varchar(15) not null,
 cognome varchar(15) not null,
@@ -28,11 +28,38 @@ password varchar(100) not null
 );
 
 CREATE TABLE Amministratore (
-idAdmin int primary key AUTO_INCREMENT,
+idAdmin int(2) primary key AUTO_INCREMENT,
 email varchar(50) not null,
 nome varchar(15) not null,
 cognome varchar(15) not null,
 password varchar(100) not null
+);
+
+CREATE TABLE Fattura (
+id int(3) primary key AUTO_INCREMENT,
+data date not null,
+Note varchar(200),
+idUtente int(3) not null,
+foreign key(IdUtente) references Utenti(id)
+);
+
+
+CREATE TABLE Acquisto (
+idProdotto int(3) not null,
+idFattura int(3) not null,
+Quantita int(2) not null,
+costoAcquisto decimal(6,2) not null,
+ivaAcquisto int(2) not null,
+primary key (idProdotto, idFattura),
+foreign key (idProdotto) references Prodotto(id),
+foreign key (idFattura) references Fattura(id)
+);
+
+CREATE TABLE MetodoPagamento(
+id int(2) primary key AUTO_INCREMENT,
+tipo varchar(20) not null,
+idUtente int(3) not null,
+foreign key (idUtente) references Utenti(id)
 );
 
 INSERT INTO Prodotto (nome, categoria, descrizione, stato, lingua, iva, prezzo, stock, linkAccesso) VALUES
